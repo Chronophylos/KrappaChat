@@ -156,3 +156,6 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+.idea/KrappaChat.iml
+.idea/misc.xml
+.idea/modules.xml
