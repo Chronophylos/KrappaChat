@@ -1,4 +1,4 @@
-# KrappaChat
+# KrappaChat [![Build Status](https://travis-ci.org/Chronophylos/KrappaChat.svg?branch=master)](https://travis-ci.org/Chronophylos/KrappaChat)
 
 ## Description
 stuff with pics
