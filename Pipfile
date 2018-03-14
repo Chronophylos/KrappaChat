@@ -8,6 +8,9 @@ name = "pypi"
 [packages]
 
 kivymd = "*"
+kivy = "*"
+"kivy.deps.sdl2" = "*"
+"kivy.deps.glew" = "*"
 
 
 [dev-packages]
