@@ -8,7 +8,7 @@ name = "pypi"
 [packages]
 
 cython = {version = "==0.27.3"}
-kivy = {git = "https://github.com/kivy/kivy.git", editable = true}
+kivy = {git = "https://github.com/kivy/kivy.git", editable = true, egg = "kivy"}
 kivymd = "*"
 
 
