@@ -7,10 +7,9 @@ name = "pypi"
 
 [packages]
 
+cython = {version = "==0.27.3"}
+kivy = {git = "https://github.com/kivy/kivy.git", editable = true}
 kivymd = "*"
-kivy = "*"
-"kivy.deps.sdl2" = "*"
-"kivy.deps.glew" = "*"
 
 
 [dev-packages]
