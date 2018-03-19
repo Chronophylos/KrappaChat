@@ -31,7 +31,9 @@ before_install:
 install:
   - pipenv install --dev --skip-lock
 
-script: echo "No tests. Yet.."
+script:
+  pipenv run pycodestyle --ignore W191 main.py service
+  pipenv run pydocstyle main.py
 
 deploy:
   provider: releases
