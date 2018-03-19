@@ -160,3 +160,6 @@ venv.bak/
 Pipfile.lock
 
 secret.py
+
+# buildozer
+.buildozer

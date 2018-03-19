@@ -1,13 +1,24 @@
+sudo: true
+
 language: python
+
 python:
 - '3.3'
 - pypy
-
 os:
-  - osx
-  - win
-  - linux
-  - android
-  - ios
+- linux
+install: make
 
-install: "make"
+before_install:
+  - sudo pip install --upgrade cython==0.21
+  - sudo dpkg --add-architecture i386
+  - sudo apt-get update
+  - sudo apt-get install build-essential ccache git libncurses5:i386 libstdc++6:i386 libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 python2.7 python2.7-dev openjdk-8-jdk unzip zlib1g-dev zlib1g:i386
+
+deploy:
+  provider: releases
+  api_key:
+    secure: DeuUMatreuRzLI0tgdV4RpDrvETRQ6CtmA1a+wPgwDqMCWSwC3tVTTpoJg+YiC33k8+ywqKsvRBydhHzp3Yn5qfyxjusXrP/RCmHVThviQysUmtFeXQdj0zYqbXGaW24QFjVWyvuoP65fQBw31/8nVQ7AXQCtY+VD9Jc7BFQA5FbY7k2VaMBHlC60m5GZxynITOO8IlYs8OFMl7rPvWsVBwi5IL/Iyan45UQct2nydBU/UOHKJGySzVz9zlAGTUaMdN6GCFaS82IhLpBOnl0Ow51CioN92vYF+Xxb/6X8686ANiOmd7r5m7YSUKK8bDNdtjHT3OozuEDikOoXsEpKlxKmyRTaT/h6u2RukRBE73qSlU8W4oSf4w+tW5AmG0AKmEHCJEhgsI34kefH26JWJ1/FifUY2VmWyu4wM3c/ozj9tHndNJJq12Zq01ajkJ0vjbrG/RTVlLV94v9tCc6XQFDf/9IaJojLrE+cozr8L1ckbtf0EWPCMkg8maTQ451EI16Xvs5AqVz+eaHNRNa9zZzUGfHEjRhsGUULzrY200ZX6delCvri9jUzwZesFKOirS4tuPDQGAOtLgazClK1Xdk+d6axvOXbC9Q+atZHY3aw7Qo37achZ+8rWn2GO5LVAXU964KfLP9FGHS+TF82Vt9ksuxmiHocAtHXHBI6NI=
+  file: dist/KrappaChat
+  on:
+    repo: Chronophylos/KrappaChat
