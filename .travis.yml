@@ -16,7 +16,7 @@ before_install:
 
 install:
   - pip install --upgrade pipenv
-  - pip install --upgrade cython==0.21 buildozer
+  - pip install buildozer
   - pipenv --three --site-packages
   - pipenv install
 
