@@ -4,9 +4,11 @@
 stuff with pics
 
 ## Requirements
-* [Python 3.5+](https://python.org)
-* [Kivy](https://kivy.org)
+* [Python 3.6+](https://python.org)
 * [Pipenv](https://pipenv.org)
+* [SDL2](https://libsdl.org/download-2.0.php)
+* [Gstreamer 1.x](https://gstreamer.net)
+* [PyEnchant](https://pythonhosted.org/pyenchant)
 
 You can get all additional requirements with
 ```bash
@@ -14,4 +16,4 @@ pipenv install
 ```
 
 ## Credits
-Thanks to [Kenneth  Reitz](https://kennethreitz.org) for his amazing Python projects
+Thanks to [Kenneth Reitz](https://kennethreitz.org) for his amazing Python projects.
