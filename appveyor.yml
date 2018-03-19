@@ -1,0 +1,12 @@
+stack: python 3.6, python 3.7-dev
+
+build: off
+
+test: off
+
+install:
+  - "python --version"
+  - "pip install --upgrade cython==0.21 pipenv setuptools buildozer"
+  - "pipenv install --dev --skip-lock"
+  - "pipenv graph"
+
