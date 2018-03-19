@@ -8,16 +8,32 @@ python:
 os:
   - linux
 
+addons:
+  apt:
+    packages:
+      - build-essential
+      - gcc
+      - ccache
+      - openjdk-8-jdk
+      - unzip
+      - zlib1g-dev
+      - libncurses5:i386
+      - libstdc++6:i386
+      - libgtk2.0-0:i386
+      - libpangox-1.0-0:i386
+      - libpangoxft-1.0-0:i386
+      - libidn11:i386
+      - zlib1g:i386
+
 before_install:
-  - sudo pip install --upgrade cython==0.21
-  - sudo dpkg --add-architecture i386
-  - sudo apt -qq update
-  - sudo apt -qq install build-essential gcc ccache git libncurses5:i386 libstdc++6:i386 libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 openjdk-8-jdk unzip zlib1g-dev zlib1g:i386
+  - sudo pip install --upgrade cython==0.21 pipenv setuptools buildozer
 
 install:
-  - pip install --upgrade pipenv
-  - pip install --upgrade cython==0.21 buildozer
-  - pipenv install --three --site-packages
+  - pipenv install --dev --skip-lock
+
+script:
+  - pipenv run pycodestyle --ignore W191 main.py service
+  - pipenv run pydocstyle main.py
 
 deploy:
   provider: releases

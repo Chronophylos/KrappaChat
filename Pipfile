@@ -12,6 +12,8 @@ irc = "*"
 [dev-packages]
 buildozer = "*"
 pyinstaller = "*"
+pydocstyle = "*"
+pycodestyle = "*"
 
 [requires]
 python_version = "3.6"
