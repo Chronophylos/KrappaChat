@@ -1,8 +1,10 @@
+import logging
+import sys
+import pickle
+
 from kivy.app import App
 from kivy.utils import platform
 from pythonosc import osc_server, dispatcher
-import sys
-import logging
 logging.basicConfig(level=logging.DEBUG)
 
 
@@ -32,13 +34,13 @@ class KrappaChatApp(App):
 	def on_stop(self):
 		self.osc_server.shutdown()
 
-	def on_pubmsg(self, message, *args):
-		logging.info(f'Got a message! {message} {args}')
-		self.root.text += f'Pubmsg: {args[0]}\n'
+	def on_pubmsg(self, message, event):
+		event = pickle.loads(event)
+		self.root.text += f'Pubmsg: {event.arguments[0]}\n'
 
 	def on_whisper(self, message, *args):
-		logging.info(f'Got a whisper! {message} {args}')
-		self.root.text += f'Whisper: {args[0]}\n'
+		event = pickle.loads(event)
+		self.root.text += f'Whisper: {event.arguments[0]}\n'
 
 
 if __name__ == '__main__':

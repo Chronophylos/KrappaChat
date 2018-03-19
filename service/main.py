@@ -1,9 +1,9 @@
 import logging
 import sys
+import pickle
 
 import irc.client
 from pythonosc import udp_client
-
 logging.basicConfig(level=logging.DEBUG)
 
 
@@ -31,10 +31,10 @@ class TwitchChatClient(irc.client.SimpleIRCClient):
 		sys.exit(0)
 
 	def on_pubmsg(self, connection, event):
-		self.osc_client.send_message('/pubmsg', event.arguments[0])
+		self.osc_client.send_message('/pubmsg', pickle.dumps(event))
 
-	def on_privmsg(self, connection, event):
-		self.osc_client.send_message('/whisper', event.arguments[0])
+	def on_whisper(self, connection, event):
+		self.osc_client.send_message('/whisper', pickle.dumps(event))
 
 
 def main():

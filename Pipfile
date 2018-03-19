@@ -1,24 +1,17 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [packages]
-
-cython = {version = "==0.27.3"}
+cython = "==0.27.3"
 kivy = {git = "https://github.com/kivy/kivy.git", editable = true, egg = "kivy"}
 python-osc = "*"
 irc = "*"
 
-
 [dev-packages]
-
 buildozer = "*"
 pyinstaller = "*"
 
-
 [requires]
-
 python_version = "3.6"
