@@ -7,14 +7,15 @@ name = "pypi"
 
 [packages]
 
-cython = {version = "==0.27.3"}
-kivy = {git = "https://github.com/kivy/kivy.git", editable = true, egg = "kivy"}
+Cython = {version = "==0.27.3"}
+Kivy = {git = "https://github.com/kivy/kivy.git", editable = true, egg = "kivy"}
 python-osc = "*"
 irc = "*"
 
 
 [dev-packages]
 
+buildozer = "*"
 
 
 [requires]
