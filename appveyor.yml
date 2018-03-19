@@ -1,12 +1,18 @@
-stack: python 3.6, python 3.7-dev
+environment:
+  matrix:
+    - PYTHON: "C:\\Python36"
+    - PYTHON: "C:\\Python36-x64"
+
+install:
+  - "echo %PATH%"
+  - "%PYTHON%\\python.exe --version"
+  - "%PYTHON%\\Scripts\\pip.exe install --upgrade cython==0.21 pipenv setuptools buildozer"
+  - "%PYTHON%\\Scripts\\pipenv.exe install --dev --skip-lock"
+  - "%PYTHON%\\Scripts\\pipenv.exe graph"
 
 build: off
 
 test: off
 
-install:
-  - "python --version"
-  - "pip install --upgrade cython==0.21 pipenv setuptools buildozer"
-  - "pipenv install --dev --skip-lock"
-  - "pipenv graph"
-
+artifacts:
+  - path: dist\*
