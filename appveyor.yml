@@ -6,7 +6,7 @@ environment:
 install:
   - "echo %PATH%"
   - "%PYTHON%\\python.exe --version"
-  - "%PYTHON%\\Scripts\\pip.exe install --upgrade cython==0.21 pipenv setuptools buildozer"
+  - "%PYTHON%\\Scripts\\pip.exe install cython==0.21 pipenv setuptools buildozer"
   - "%PYTHON%\\Scripts\\pipenv.exe install --dev --skip-lock"
   - "%PYTHON%\\Scripts\\pipenv.exe graph"
 
