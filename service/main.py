@@ -1,7 +1,9 @@
-import irc.client
-import sys
 import logging
-from pythonosc import udp_client, osc_message_builder
+import sys
+
+import irc.client
+from pythonosc import udp_client
+
 logging.basicConfig(level=logging.DEBUG)
 
 
@@ -29,16 +31,15 @@ class TwitchChatClient(irc.client.SimpleIRCClient):
 		sys.exit(0)
 
 	def on_pubmsg(self, connection, event):
-		osc_client.send_message('/pubmsg', event.arguments[0])
+		self.osc_client.send_message('/pubmsg', event.arguments[0])
 
 	def on_privmsg(self, connection, event):
-		osc_client.send_message('/whisper', event.arguments[0])
+		self.osc_client.send_message('/whisper', event.arguments[0])
 
 
 def main():
-	nickname = 'xxx'
-	oauth_token = 'xxx'
-	TwitchChatClient(['#xxx'], nickname, oauth_token)
+	from secret import nickname, oauth
+	TwitchChatClient(['#chronophylos'], nickname, oauth)
 
 
 if __name__ == '__main__':

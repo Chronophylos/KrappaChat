@@ -158,3 +158,5 @@ venv.bak/
 
 # Pipenv
 Pipfile.lock
+
+secret.py
