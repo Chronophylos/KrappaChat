@@ -3,11 +3,14 @@ sudo: true
 language: python
 
 python:
-- '3.3'
-- pypy
+  - '3.6'
+  - '3.7'
 os:
-- linux
-install: make
+  - linux
+
+install:
+  - pip install pipenv
+  - pipenv install --system --dev
 
 before_install:
   - sudo pip install --upgrade cython==0.21
