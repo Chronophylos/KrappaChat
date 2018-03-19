@@ -32,8 +32,8 @@ install:
   - pipenv install --dev --skip-lock
 
 script:
-  - pipenv run pycodestyle --ignore W191 main.py service
-  - pipenv run pydocstyle main.py
+  - pipenv run pycodestyle --ignore W191 krappachat
+  - pipenv run pydocstyle krappachat
 
 deploy:
   provider: releases
