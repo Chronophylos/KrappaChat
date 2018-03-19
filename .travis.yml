@@ -26,4 +26,3 @@ deploy:
   file: dist/KrappaChat
   on:
     repo: Chronophylos/KrappaChat
- python2.7 python2.7-dev
