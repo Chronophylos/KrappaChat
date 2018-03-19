@@ -18,6 +18,8 @@ install:
   - pipenv --three --site-packages
   - pipenv install
 
+script: echo "No tests. Yet.."
+
 deploy:
   provider: releases
   api_key:
