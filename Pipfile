@@ -5,8 +5,11 @@ name = "pypi"
 
 [packages]
 cython = "== 0.27.3"
-"kivy.deps.glew" = {version = "*", sys_platform = "== 'win32'"}
+docutils = {version = "*", sys_platform = "== 'win32'"}
+pygments = {version = "*", sys_platform = "== 'win32'"}
+pypiwin32 = {version = "*", sys_platform = "== 'win32'"}
 "kivy.deps.sdl2" = {version = "*", sys_platform = "== 'win32'"}
+"kivy.deps.angle" = {version = "*", sys_platform = "== 'win32'"}
 kivy = {git = "https://github.com/kivy/kivy.git", editable = true, egg = "kivy"}
 python-osc = "*"
 irc = "*"
