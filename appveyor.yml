@@ -1,3 +1,5 @@
+version: {branch}-{build}
+
 environment:
   matrix:
     - PYTHON: "C:\\Python36"
