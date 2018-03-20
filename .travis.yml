@@ -32,7 +32,7 @@ install:
   - pipenv install --dev --skip-lock
 
 script:
-  - pipenv run pycodestyle --ignore W191 krappachat
+  - pipenv run pycodestyle --ignore W191,E501 krappachat
   - pipenv run pydocstyle --ignore D203,D300 krappachat
 
 deploy:
