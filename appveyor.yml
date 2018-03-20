@@ -10,9 +10,9 @@ install:
   # - "%PYTHON%\\Scripts\\pip.exe install --upgrade setuptools"
   - "%PYTHON%\\Scripts\\pipenv.exe install --sequential --dev --skip-lock"
   - "%PYTHON%\\Scripts\\pipenv.exe graph"
-
-build:
   - "%PYTHON%\\Scripts\\pipenv.exe run pyinstaller -D --windowed --name KrappaChat krappachat\\main.py"
+
+build: off
 
 test: off
 
