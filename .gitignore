@@ -82,7 +82,7 @@ MANIFEST
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
-*.spec
+KrappaChat.spec
 
 # Installer logs
 pip-log.txt
@@ -162,4 +162,4 @@ Pipfile.lock
 secret.py
 
 # buildozer
-.buildozer
+.buildozer/

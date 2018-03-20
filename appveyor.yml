@@ -11,7 +11,8 @@ install:
   - "%PYTHON%\\Scripts\\pipenv.exe install --sequential --dev --skip-lock"
   - "%PYTHON%\\Scripts\\pipenv.exe graph"
 
-build: off
+build:
+  - "%PYTHON%\\Scripts\\pipenv.exe run pyinstaller -D --windowed --name KrappaChat krappachat\\main.py"
 
 test: off
 
