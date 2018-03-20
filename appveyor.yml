@@ -1,22 +1,24 @@
-version: 0.0.0-{build}
+version: {build}
 
 environment:
   matrix:
     - PYTHON: "C:\\Python36"
     - PYTHON: "C:\\Python36-x64"
+  GLEW: glew-2.1.0-win32.zip
+  PIP: %PYTHON%\Scripts\pip.exe
+  PIPENV: %PYTHON%\Scripts\pipenv.exe
 
 install:
-  # install glew
-  - "appveyor DownloadFile https://github.com/nigels-com/glew/releases/download/glew-2.1.0/glew-2.1.0-win32.zip"
-  - "7za.exe e glew-2.1.0-win32.zip glew"
-  - "dir"
-  - "dir glew"
-  - "move glew\\include\\GL ."
-  - "%PYTHON%\\Scripts\\pip.exe install cython==0.21 pipenv buildozer"
-  # - "%PYTHON%\\Scripts\\pip.exe install --upgrade setuptools"
-  - "%PYTHON%\\Scripts\\pipenv.exe install --sequential --dev --skip-lock"
-  - "%PYTHON%\\Scripts\\pipenv.exe graph"
-  - "%PYTHON%\\Scripts\\pipenv.exe run pyinstaller -D --windowed --name KrappaChat krappachat\\main.py"
+  - ps: | # install glew
+      appveyor DownloadFile https://github.com/nigels-com/glew/releases/download/glew-2.1.0/$env:GLEW
+      7z x $env:GLEW -aos -o"."
+  - ps: | # python stuff
+      $env:PIP install cython==0.21 pipenv buildozer
+      $env:PIPENV install --sequential --dev --skip-lock
+      $env:PIPENV graph
+  - ps: | # build and pack
+      $env:PIPENV run pyinstaller -D --windowed --name KrappaChat krappachat\main.py
+
 
 build: off
 
