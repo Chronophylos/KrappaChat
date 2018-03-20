@@ -1,4 +1,4 @@
-version: {branch}.{build}
+version: 0.0.0-{build}
 
 environment:
   matrix:
