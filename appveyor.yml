@@ -8,8 +8,7 @@ environment:
 
 install:
   - ps: | # set environment
-      $env:PIP = %PYTHON%\Scripts\pip.exe
-      $env:PIPENV = %PYTHON%\Scripts\pipenv.exe
+      $env:Path += ";" + $env:PYTHON + "\\Scripts"
   - ps: | # install glew
       appveyor DownloadFile https://github.com/nigels-com/glew/releases/download/glew-2.1.0/$env:GLEW
       7z x $env:GLEW -aos -o"."
