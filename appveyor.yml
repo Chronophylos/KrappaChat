@@ -5,8 +5,8 @@ environment:
 
 install:
   - "%PYTHON%\\Scripts\\pip.exe install cython==0.21 pipenv buildozer"
-  - "%PYTHON%\\Scripts\\pip.exe install --upgrade setuptools"
-  - "%PYTHON%\\Scripts\\pipenv.exe install --dev --skip-lock"
+  # - "%PYTHON%\\Scripts\\pip.exe install --upgrade setuptools"
+  - "%PYTHON%\\Scripts\\pipenv.exe install --sequential --dev --skip-lock"
   - "%PYTHON%\\Scripts\\pipenv.exe graph"
 
 build: off
