@@ -6,6 +6,12 @@ environment:
     - PYTHON: "C:\\Python36-x64"
 
 install:
+  # install glew
+  - "appveyor DownloadFile https://github.com/nigels-com/glew/releases/download/glew-2.1.0/glew-2.1.0-win32.zip"
+  - "7za.exe e glew-2.1.0-win32.zip glew"
+  - "dir"
+  - "dir glew"
+  - "move glew\\include\\GL ."
   - "%PYTHON%\\Scripts\\pip.exe install cython==0.21 pipenv buildozer"
   # - "%PYTHON%\\Scripts\\pip.exe install --upgrade setuptools"
   - "%PYTHON%\\Scripts\\pipenv.exe install --sequential --dev --skip-lock"
