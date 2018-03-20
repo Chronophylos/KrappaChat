@@ -12,10 +12,11 @@ install:
   - ps: | # install glew
       appveyor DownloadFile https://github.com/nigels-com/glew/releases/download/glew-2.1.0/$env:GLEW
       7z x $env:GLEW -aos -o"."
+      dir
   - ps: | # python stuff
-      $env:PIP install cython==0.21 pipenv buildozer
-      $env:PIPENV install --sequential --dev --skip-lock
-      $env:PIPENV graph
+      pip.exe install cython==0.21 pipenv buildozer
+      pipenv.exe install --sequential --dev --skip-lock
+      pipenv.exe graph
   - ps: | # build and pack
       $env:PIPENV run pyinstaller -D --windowed --name KrappaChat krappachat\main.py
 
