@@ -7,6 +7,7 @@ import requests
 
 class API:
 	'''Class to wrap the twitch API.'''
+
 	client_id = b'cnNrYW94bjlpaHBwMGRpZDdqMzJsZHZ1Z3ZrdXJ4'
 
 	def __init__(self):

@@ -1,12 +1,12 @@
-'''This module contains the main() method run by the KrappaChatApp as a background
-service to run a TwitchChatClient instance.
-'''
+'''Module containing the main() method run by the KrappaChatApp as a background service to run a TwitchChatClient instance.'''
 
 import logging
 import sys
 import pickle
+import ssl
 
 import irc.client
+import irc.connection
 from pythonosc import udp_client
 logging.basicConfig(level=logging.DEBUG)
 
@@ -15,21 +15,17 @@ class TwitchChatClient(irc.client.SimpleIRCClient):
 	'''Twitch specific SimpleIRCClient to connect to and communicate with the twitch chat servers.'''
 
 	def __init__(self, channels, nickname, oauth_token):
-		'''Creates a new TwitchChatClient using the provided nickname and oauth_token
-		to connect to the twitch server and join the given channels.
-		'''
-		server, port = 'irc.chat.twitch.tv', 6667
+		'''Create a new TwitchChatClient using the provided nickname and oauth_token to connect to the twitch server and join the given channels.'''
+		server, port = 'irc.chat.twitch.tv', 443
 		self.channels = channels
 		self.osc_client = udp_client.SimpleUDPClient('127.0.0.1', 3000)
 		irc.client.SimpleIRCClient.__init__(self)
-		self.connect(server, port, nickname, password=oauth_token)
+		connect_factory = irc.connection.Factory(wrapper=ssl.wrap_socket)
+		self.connect(server, port, nickname, password=oauth_token, connect_factory=connect_factory)
 		self.start()
 
 	def on_welcome(self, connection, event):
-		'''Server welcome handling. Join the given channels and use IRC v3 capability
-		registration as documented here:
-		https://dev.twitch.tv/docs/irc/#twitch-specific-irc-capabilities
-		'''
+		'''Server welcome handling. Join the given channels and use IRC v3 capability registration as documented here: https://dev.twitch.tv/docs/irc/#twitch-specific-irc-capabilities .'''
 		connection.cap('REQ', ':twitch.tv/membership')
 		connection.cap('REQ', ':twitch.tv/tags')
 		connection.cap('REQ', ':twitch.tv/commands')
@@ -54,9 +50,9 @@ class TwitchChatClient(irc.client.SimpleIRCClient):
 
 
 def main():
-	'''Main method to be used as the background service.'''
-	from secret import nickname, oauth
-	TwitchChatClient(['#chronophylos'], nickname, oauth)
+	'''Use this method as the background service.'''
+	from secret import nickname, oauth, channels
+	TwitchChatClient(channels, nickname, oauth)
 
 
 if __name__ == '__main__':

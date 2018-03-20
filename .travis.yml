@@ -33,7 +33,7 @@ install:
 
 script:
   - pipenv run pycodestyle --ignore W191 krappachat
-  - pipenv run pydocstyle krappachat
+  - pipenv run pydocstyle --ignore D203,D300 krappachat
 
 deploy:
   provider: releases
