@@ -5,10 +5,11 @@ environment:
     - PYTHON: "C:\\Python36"
     - PYTHON: "C:\\Python36-x64"
   GLEW: glew-2.1.0-win32.zip
-  PIP: %PYTHON%\Scripts\pip.exe
-  PIPENV: %PYTHON%\Scripts\pipenv.exe
 
 install:
+  - ps: | # set environment
+      $env:PIP = %PYTHON%\Scripts\pip.exe
+      $env:PIPENV = %PYTHON%\Scripts\pipenv.exe
   - ps: | # install glew
       appveyor DownloadFile https://github.com/nigels-com/glew/releases/download/glew-2.1.0/$env:GLEW
       7z x $env:GLEW -aos -o"."
