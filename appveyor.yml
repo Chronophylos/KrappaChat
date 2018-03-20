@@ -4,9 +4,8 @@ environment:
     - PYTHON: "C:\\Python36-x64"
 
 install:
-  - "echo %PATH%"
-  - "%PYTHON%\\python.exe --version"
-  - "%PYTHON%\\Scripts\\pip.exe install cython==0.21 pipenv setuptools buildozer"
+  - "%PYTHON%\\Scripts\\pip.exe install cython==0.21 pipenv buildozer"
+  - "%PYTHON%\\Scripts\\pip.exe install --upgrade setuptools"
   - "%PYTHON%\\Scripts\\pipenv.exe install --dev --skip-lock"
   - "%PYTHON%\\Scripts\\pipenv.exe graph"
 
