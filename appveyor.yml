@@ -3,7 +3,9 @@ version: "{build}"
 environment:
   matrix:
     - PYTHON: "C:\\Python36"
+      ARCH: "Win32"
     - PYTHON: "C:\\Python36-x64"
+      ARCH: "x64"
   GLEW: glew-2.1.0
 
 install:
@@ -14,11 +16,12 @@ install:
       appveyor DownloadFile https://github.com/nigels-com/glew/releases/download/glew-2.1.0/$GLEW_ZIP
       7z x $GLEW_ZIP -aos -o"."
       dir $env:GLEW
-      dir $env:GLEW/bin/Release
-      dir $env:GLEW/lib/Release
+      dir $env:GLEW/bin/Release/$env:ARCH
+      dir $env:GLEW/lib/Release/$env:ARCH
       dir $env:GLEW/include
-      move $env:GLEW/bin/Release/glew32.dll $env:systemroot/system32
-      move $env:GLEW/lib/Release/glew32.lib $env:PYTHON/Lib
+      dir $env:PYTHON/Include/GL
+      move $env:GLEW/bin/Release/$env:ARCH/glew32.dll $env:systemroot/system32
+      move $env:GLEW/lib/Release/$env:ARCH/glew32.lib $env:PYTHON/Lib
       move $env:GLEW/include/GL/glew.h $env:PYTHON/Include/GL
       move $env:GLEW/include/GL/wglew.h $env:PYTHON/Include/GL
       dir
