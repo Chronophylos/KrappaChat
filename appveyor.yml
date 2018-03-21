@@ -12,10 +12,10 @@ install:
   - ps: | # install glew
       appveyor DownloadFile https://github.com/nigels-com/glew/releases/download/glew-2.1.0/$env:GLEW
       7z x $env:GLEW -aos -o"."
-      move bin/glew32.dll $env:systemroot/system32
-      move lib/glew32.lib $env:PYTHON/Lib
-      move include/GL/glew.h $env:PYTHON/Include/GL
-      move include/GL/wglew.h $env:PYTHON/Include/GL
+      move glew/bin/glew32.dll $env:systemroot/system32
+      move glew/lib/glew32.lib $env:PYTHON/Lib
+      move glew/include/GL/glew.h $env:PYTHON/Include/GL
+      move glew/include/GL/wglew.h $env:PYTHON/Include/GL
       dir
   - ps: | # python stuff
       $env:PY/pip.exe install cython==0.21 pipenv buildozer
