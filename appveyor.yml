@@ -4,18 +4,19 @@ environment:
   matrix:
     - PYTHON: "C:\\Python36"
     - PYTHON: "C:\\Python36-x64"
-  GLEW: glew-2.1.0-win32.zip
+  GLEW: glew-2.1.0
 
 install:
   - ps: | # set environment
       $env:PY = $env:PYTHON + "/Scripts"
   - ps: | # install glew
-      appveyor DownloadFile https://github.com/nigels-com/glew/releases/download/glew-2.1.0/$env:GLEW
+      appveyor DownloadFile $("https://github.com/nigels-com/glew/releases/download/glew-2.1.0/" + $env:GLEW + "-win32.zip"
       7z x $env:GLEW -aos -o"."
-      move glew/bin/glew32.dll $env:systemroot/system32
-      move glew/lib/glew32.lib $env:PYTHON/Lib
-      move glew/include/GL/glew.h $env:PYTHON/Include/GL
-      move glew/include/GL/wglew.h $env:PYTHON/Include/GL
+      dir $env:GLEW
+      move $env:GLEW/bin/glew32.dll $env:systemroot/system32
+      move $env:GLEW/lib/glew32.lib $env:PYTHON/Lib
+      move $env:GLEW/include/GL/glew.h $env:PYTHON/Include/GL
+      move $env:GLEW/include/GL/wglew.h $env:PYTHON/Include/GL
       dir
   - ps: | # python stuff
       $env:PY/pip.exe install cython==0.21 pipenv buildozer
