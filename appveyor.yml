@@ -14,6 +14,9 @@ install:
       appveyor DownloadFile https://github.com/nigels-com/glew/releases/download/glew-2.1.0/$GLEW_ZIP
       7z x $GLEW_ZIP -aos -o"."
       dir $env:GLEW
+      dir $env:GLEW/bin
+      dir $env:GLEW/lib
+      dir $env:GLEW/include
       move $env:GLEW/bin/glew32.dll $env:systemroot/system32
       move $env:GLEW/lib/glew32.lib $env:PYTHON/Lib
       move $env:GLEW/include/GL/glew.h $env:PYTHON/Include/GL
