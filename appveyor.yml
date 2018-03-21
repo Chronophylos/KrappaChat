@@ -7,8 +7,6 @@ environment:
   GLEW: glew-2.1.0-win32.zip
 
 install:
-  - ps: |
-      python --version
   - ps: | # set environment
       $env:PY = $env:PYTHON + "/Scripts"
   - ps: | # install glew
