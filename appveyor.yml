@@ -10,7 +10,7 @@ install:
   - ps: | # set environment
       $env:PY = $env:PYTHON + "/Scripts"
   - ps: | # install glew
-      GLEW_ZIP = $env:GLEW + "-win32.zip"
+      $GLEW_ZIP = $env:GLEW + "-win32.zip"
       appveyor DownloadFile https://github.com/nigels-com/glew/releases/download/glew-2.1.0/$GLEW_ZIP
       7z x $GLEW_ZIP -aos -o"."
       dir $env:GLEW
