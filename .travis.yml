@@ -1,4 +1,4 @@
-sudo: true
+sudo: false
 
 language: python
 
@@ -26,7 +26,7 @@ addons:
       - zlib1g:i386
 
 before_install:
-  - sudo pip install --upgrade cython==0.21 pipenv setuptools buildozer
+  - pip install --upgrade cython==0.21 pipenv setuptools buildozer
 
 install:
   - pipenv install --dev --skip-lock
