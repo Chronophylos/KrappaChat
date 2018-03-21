@@ -7,10 +7,10 @@ environment:
   GLEW: glew-2.1.0-win32.zip
 
 install:
+  - ps: |
+      python --version
   - ps: | # set environment
-      python --version
-      $env:Path += ";" + $env:PYTHON + "/Scripts"
-      python --version
+      $env:PY = $env:PYTHON + "/Scripts"
   - ps: | # install glew
       appveyor DownloadFile https://github.com/nigels-com/glew/releases/download/glew-2.1.0/$env:GLEW
       7z x $env:GLEW -aos -o"."
@@ -20,12 +20,13 @@ install:
       move include/GL/wglew.h $env:PYTHON/Include/GL
       dir
   - ps: | # python stuff
-      pip.exe install cython==0.21 pipenv buildozer
+      $env:PY/pip.exe install cython==0.21 pipenv buildozer
   - ps: | # pipenv stuff
-      pipenv.exe install --sequential --dev --skip-lock
-      pipenv.exe graph
+      $env:PY/pipenv.exe install --sequential --dev --skip-lock
+  - ps: |
+      $env:PY/pipenv.exe graph
   - ps: | # build and pack
-      pipenv.exe run pyinstaller -D --windowed --name KrappaChat krappachat/main.py
+      $env:PY/pipenv.exe run pyinstaller -D --windowed --name KrappaChat krappachat/main.py
 
 
 build: off
