@@ -1,4 +1,4 @@
-sudo: true
+sudo: false
 
 language: python
 
@@ -26,14 +26,15 @@ addons:
       - zlib1g:i386
 
 before_install:
-  - sudo pip install cython==0.21 pipenv setuptools buildozer
+  - pip install --upgrade pipenv setuptools buildozer
 
 install:
   - pipenv install --dev --skip-lock
 
 script:
-  - pipenv run pycodestyle krappachat
-  - pipenv run pydocstyle krappachat
+  - pipenv run pycodestyle --ignore W191 main.py service
+  - pipenv run pydocstyle main.py
+  - pipenv run pyinstaller --windowed --strip --onedir --name krappachat krappachat/main
 
 deploy:
   provider: releases

@@ -8,12 +8,14 @@ cython = "==0.27.3"
 kivy = {git = "https://github.com/kivy/kivy.git", editable = true, egg = "kivy"}
 python-osc = "*"
 irc = "*"
+requests = {version = "==2.2.1"}
 
 [dev-packages]
 buildozer = "*"
 pyinstaller = "*"
 pydocstyle = "*"
 pycodestyle = "*"
+
 
 [requires]
 python_version = "3.6"
