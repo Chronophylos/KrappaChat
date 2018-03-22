@@ -163,3 +163,5 @@ secret.py
 
 # buildozer
 .buildozer
+
+.idea
