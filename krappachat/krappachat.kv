@@ -1,4 +1,80 @@
-Label:
-	text: 'Hello World Krappa\n'
-	size_hint: .5, .5
-	pos_hint: {'center_x':.5, 'center_y': .5}
+#<Widget>:
+#	canvas.after:
+#		Line:
+#			rectangle: self.x+1,self.y+1,self.width-1,self.height-1
+#			dash_offset: 5
+#			dash_length: 3
+
+<Row@BoxLayout>:
+	canvas.before:
+		Color:
+			rgba: 0.12, 0.12, 0.12, 1
+		Rectangle:
+			size: self.size
+			pos: self.pos
+	event: None
+	padding: 2, 2
+	Label:
+		text: f'[color=555]{root.event.time_string}[/color]' if root.event else ''
+		valign: 'center'
+		text_size: self.size
+		minimum_width: self.width
+		size_hint_x: 0.1
+		markup: True
+	Label:
+		text: f'[b][color={root.event.user_color}]{root.event.user_name}[/color][/b]' if root.event else ''
+		halign: 'left'
+		valign: 'center'
+		text_size: self.size
+		minimum_width: self.width
+		size_hint_x: 0.2
+		markup: True
+	Label:
+		text: '' if not root.event else root.event.message
+		halign: 'left'
+		valign: 'center'
+		text_size: self.size
+		size_hint_x: 0.7
+		markup: True
+
+
+<ChatView>:
+	canvas:
+		Color:
+			rgba: 0.1, 0.1, 0.1, 1
+		Rectangle:
+			size: self.size
+			pos: self.pos
+	rv: rv
+	orientation: 'vertical'
+
+	RecycleView:
+		id: rv
+		scroll_type: ['bars', 'content']
+		scroll_wheel_distance: dp(114)
+		bar_width: dp(10)
+		viewclass: 'Row'
+		RecycleBoxLayout:
+			default_size: None, dp(25)
+			default_size_hint: 1, None
+			size_hint_y: None
+			height: self.minimum_height
+			orientation: 'vertical'
+			spacing: dp(2)
+
+	GridLayout:
+		cols: 2
+		rows: 1
+		size_hint_y: None
+		height: dp(38)
+		padding: dp(2)
+		spacing: dp(2)
+		TextInput:
+			id: message_input
+			size_hint_x: 0.8
+			hint_text: 'Message'
+			padding: dp(10), dp(10), 0, 0
+		Button:
+			size_hint_x: 0.2
+			text: 'Send'
+			on_press: root.send_message('#krappachat', message_input.text)
