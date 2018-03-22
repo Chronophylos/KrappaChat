@@ -13,10 +13,11 @@ addons:
     packages:
       - build-essential
       - ccache
-      - ffmpeg
+      # - ffmpeg
       - gcc
       - libavcodec-dev
       - libavformat-dev
+      - libav-tools
       - libgtk2.0-0:i386
       - libidn11:i386
       - libncurses5:i386
