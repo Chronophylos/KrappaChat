@@ -51,7 +51,7 @@ class TwitchChatClient(irc.client.SimpleIRCClient):
 
 def main():
 	'''Use this method as the background service.'''
-	from secret import nickname, oauth, channels
+	from krappachat.secret import nickname, oauth, channels
 	TwitchChatClient(channels, nickname, oauth)
 
 
