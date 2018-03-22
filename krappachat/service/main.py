@@ -13,6 +13,7 @@ import threading
 
 import irc.client
 import irc.connection
+from constants import default_colors
 from pythonosc import osc_server, udp_client, dispatcher
 
 logging.basicConfig(level=logging.DEBUG)
@@ -46,7 +47,6 @@ class ChatEvent:
 	def _get_default_color_for_user(self, name):
 		"""Following: https://discuss.dev.twitch.tv/t/default-user-color-in-chat/385/2 ."""
 		n = ord(name[0]) + ord(name[-1])
-		default_colors = ['#FF0000', '#0000FF', '#00FF00', '#B22222', '#FF7F50', '#9ACD32', '#FF4500', '#2E8B57', '#DAA520', '#D2691E', '#5F9EA0', '#1E90FF', '#FF69B4', '#8A2BE2', '#00FF7F']
 		return default_colors[n % len(default_colors)]
 
 
