@@ -1,8 +1,9 @@
-# KrappaChat [![Build Status](https://travis-ci.org/Chronophylos/KrappaChat.svg?branch=master)](https://travis-ci.org/Chronophylos/KrappaChat)
+# KrappaChat [![Build Status](https://travis-ci.org/Chronophylos/KrappaChat.svg?branch=master)](https://travis-ci.org/Chronophylos/KrappaChat) [![Build status](https://ci.appveyor.com/api/projects/status/1rch72q1tver6gh3?svg=true)](https://ci.appveyor.com/project/Chronophylos/krappachat)
 
 ## Description
 stuff with pics
 
+***TODO FIX***
 ## Requirements
 * [Python 3.6+](https://python.org)
 * [Pipenv](https://pipenv.org)

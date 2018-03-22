@@ -36,7 +36,6 @@ script:
   - pipenv run pydocstyle main.py
   - pipenv run pyinstaller --windowed --strip --onedir --name krappachat krappachat/main
 
-
 deploy:
   provider: releases
   api_key:
