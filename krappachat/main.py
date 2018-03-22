@@ -12,8 +12,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 class KrappaChatApp(App):
-	"""Main kivy application responsible for GUI and background service
-	handling."""
+	"""Main kivy application responsible for GUI and background service	handling."""
 
 	def build(self):
 		"""Build main application, initialize background service and OSC server."""

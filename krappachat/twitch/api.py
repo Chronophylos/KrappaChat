@@ -1,8 +1,8 @@
 """Module containing twitch API related content."""
 
 from base64 import b64decode
-from twitch import TwitchClient
 
+from twitch import TwitchClient
 
 """
 TODO
@@ -23,4 +23,3 @@ class API:
         """Initialize the API class."""
         self.client = TwitchClient(client_id=b64decode(self.client_id).encode('utf-8'),
                                    oauth_token=oauth)
-

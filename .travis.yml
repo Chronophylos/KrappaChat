@@ -32,7 +32,7 @@ install:
   - pipenv install --dev --skip-lock
 
 script:
-  - pipenv run pycodestyle --ignore W191 krappachat
+  - pipenv run pycodestyle krappachat
   - pipenv run pydocstyle krappachat
   - pipenv run pyinstaller --windowed --strip --onedir --name krappachat krappachat/main.py
 

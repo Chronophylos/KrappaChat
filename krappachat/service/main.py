@@ -1,5 +1,8 @@
-"""Module containing the main() method run by the KrappaChatApp as a
-background service to run a TwitchChatClient instance. """
+"""Background service for KrappaChat.
+
+Module containing the main() method run by the KrappaChatApp as a
+background service to run a TwitchChatClient instance.
+"""
 
 import logging
 import pickle
@@ -14,25 +17,33 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 class TwitchChatClient(irc.client.SimpleIRCClient):
-	"""Twitch specific SimpleIRCClient to connect to and communicate with the
-	twitch chat servers. """
+	"""IRC Client for Twitch.
+
+    Twitch specific SimpleIRCClient to connect to and communicate with the twitch chat servers.
+    """
 
 	def __init__(self, channels, nickname, oauth_token):
-		"""Create a new TwitchChatClient using the provided nickname and
-		oauth_token to connect to the twitch server and join the given
-		channels. """
+		"""Create a new TwitchChatClient.
+
+        Create a new TwitchChatClient using the provided nickname and
+        oauth_token to connect to the twitch server and join the given
+        channels.
+        """
 		server, port = 'irc.chat.twitch.tv', 443
 		self.channels = channels
 		self.osc_client = udp_client.SimpleUDPClient('127.0.0.1', 3000)
 		irc.client.SimpleIRCClient.__init__(self)
 		connect_factory = irc.connection.Factory(wrapper=ssl.wrap_socket)
-		self.connect(server, port, nickname, password=oauth_token, connect_factory=connect_factory)
+		self.connect(server, port, nickname, password=oauth_token,
+					 connect_factory=connect_factory)
 		self.start()
 
 	def on_welcome(self, connection, event):
-		"""Server welcome handling. Join the given channels and use IRC v3 
-		capability registration as documented here: 
-		https://dev.twitch.tv/docs/irc/#twitch-specific-irc-capabilities . """
+		"""Server welcome handling.
+
+        Join the given channels and use IRC v3 capability registration as documented here:
+        https://dev.twitch.tv/docs/irc/#twitch-specific-irc-capabilities.
+        """
 		connection.cap('REQ', ':twitch.tv/membership')
 		connection.cap('REQ', ':twitch.tv/tags')
 		connection.cap('REQ', ':twitch.tv/commands')
