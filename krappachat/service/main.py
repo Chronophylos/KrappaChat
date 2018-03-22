@@ -4,11 +4,11 @@ Module containing the main() method run by the KrappaChatApp as a
 background service to run a TwitchChatClient instance.
 """
 
+import datetime
 import logging
-import sys
 import pickle
 import ssl
-import datetime
+import sys
 import threading
 
 import irc.client
@@ -118,7 +118,7 @@ class TwitchChatClient(irc.client.SimpleIRCClient):
 
 def main():
 	"""Use this method as the background service."""
-	from krappachat.secret import nickname, oauth, channels
+	from secret import nickname, oauth, channels
 	TwitchChatClient(channels, nickname, oauth)
 
 
