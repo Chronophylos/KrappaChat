@@ -26,7 +26,7 @@ addons:
       - zlib1g:i386
 
 before_install:
-  - pip install --upgrade cython==0.21 pipenv setuptools buildozer
+  - pip install --upgrade pipenv setuptools buildozer
 
 install:
   - pipenv install --dev --skip-lock
