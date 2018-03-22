@@ -45,7 +45,7 @@ class KrappaChatApp(App):
 			from android import AndroidService
 			self.service = AndroidService(title='IRCService')
 		elif platform in ['linux', 'win']:
-			from krappachat.service.main import main
+			from service.main import main
 			self.service = threading.Thread(target=main, args=())
 			self.service.daemon = True
 		else:
