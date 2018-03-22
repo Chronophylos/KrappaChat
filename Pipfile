@@ -8,7 +8,7 @@ cython = "==0.27.3"
 kivy = {git = "https://github.com/kivy/kivy.git", editable = true, egg = "kivy"}
 python-osc = "*"
 irc = "*"
-requests = {version = "==2.2.1"}
+python-twitch-client = {git = "https://github.com/tsifrer/python-twitch-client.git", editable = true}
 
 [dev-packages]
 buildozer = "*"
