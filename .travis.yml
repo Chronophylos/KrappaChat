@@ -46,8 +46,12 @@ script:
   - pipenv run pydocstyle krappachat
   - pipenv run pyinstaller --windowed --strip --onedir --name krappachat krappachat/main.py
 
+before_deploy:
+  - git tag nightly
+
 deploy:
   provider: releases
+  overwrite: true
   api_key:
     secure: DeuUMatreuRzLI0tgdV4RpDrvETRQ6CtmA1a+wPgwDqMCWSwC3tVTTpoJg+YiC33k8+ywqKsvRBydhHzp3Yn5qfyxjusXrP/RCmHVThviQysUmtFeXQdj0zYqbXGaW24QFjVWyvuoP65fQBw31/8nVQ7AXQCtY+VD9Jc7BFQA5FbY7k2VaMBHlC60m5GZxynITOO8IlYs8OFMl7rPvWsVBwi5IL/Iyan45UQct2nydBU/UOHKJGySzVz9zlAGTUaMdN6GCFaS82IhLpBOnl0Ow51CioN92vYF+Xxb/6X8686ANiOmd7r5m7YSUKK8bDNdtjHT3OozuEDikOoXsEpKlxKmyRTaT/h6u2RukRBE73qSlU8W4oSf4w+tW5AmG0AKmEHCJEhgsI34kefH26JWJ1/FifUY2VmWyu4wM3c/ozj9tHndNJJq12Zq01ajkJ0vjbrG/RTVlLV94v9tCc6XQFDf/9IaJojLrE+cozr8L1ckbtf0EWPCMkg8maTQ451EI16Xvs5AqVz+eaHNRNa9zZzUGfHEjRhsGUULzrY200ZX6delCvri9jUzwZesFKOirS4tuPDQGAOtLgazClK1Xdk+d6axvOXbC9Q+atZHY3aw7Qo37achZ+8rWn2GO5LVAXU964KfLP9FGHS+TF82Vt9ksuxmiHocAtHXHBI6NI=
   folder: dist/krappachat
