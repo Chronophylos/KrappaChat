@@ -12,15 +12,15 @@ TODO
 
 
 class API:
-    """Class to wrap the twitch API."""
+	"""Class to wrap the twitch API."""
 
-    client_id = b'cnNrYW94bjlpaHBwMGRpZDdqMzJsZHZ1Z3ZrdXJ4'
+	client_id = b'cnNrYW94bjlpaHBwMGRpZDdqMzJsZHZ1Z3ZrdXJ4'
 
-    users = list()
-    channels = list()
+	users = list()
+	channels = list()
 
-    def __init__(self, oauth: str):
-        """Initialize the API class."""
+	def __init__(self, oauth: str):
+		"""Initialize the API class."""
 		self.client = TwitchClient(
 			client_id=b64decode(self.client_id).decode('utf-8'),
 			oauth_token=oauth)
