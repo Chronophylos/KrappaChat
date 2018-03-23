@@ -1,15 +1,15 @@
 """Main module of KrappaChat containing the KrappaChatApp kivy application."""
 
 import logging
-import sys
 import pickle
+import sys
 import threading
 
 from kivy.app import App
-from kivy.utils import platform
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.label import Label
+from kivy.utils import platform
 from pythonosc import osc_server, udp_client, dispatcher
+
 logging.basicConfig(level=logging.INFO)
 
 
@@ -45,8 +45,8 @@ class KrappaChatApp(App):
 			from android import AndroidService
 			self.service = AndroidService(title='IRCService')
 		elif platform in ['linux', 'win']:
-			from service.main import main
-			self.service = threading.Thread(target=main, args=())
+			from .service import create_service
+			self.service = threading.Thread(target=create_service, args=())
 			self.service.daemon = True
 		else:
 			logging.critical(f'Currently not supported platform!')
@@ -82,5 +82,9 @@ class KrappaChatApp(App):
 		self.chat_view.add_event(event)
 
 
-if __name__ == '__main__':
+def main():
 	KrappaChatApp().run()
+
+
+if __name__ == '__main__':
+	main()

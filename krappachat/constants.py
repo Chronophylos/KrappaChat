@@ -1,3 +1,5 @@
+"""File with some constants"""
+
 default_colors = [
 	'#FF0000',
 	'#0000FF',

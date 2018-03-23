@@ -44,7 +44,7 @@ install:
 script:
   - pipenv run pycodestyle krappachat
   - pipenv run pydocstyle krappachat
-  - pipenv run pyinstaller --windowed --strip --onefile --name krappachat krappachat/main.py
+  - pipenv run pyinstaller --windowed --strip --onefile --name krappachat krappachat/__main__.py
 
 before_deploy:
   - git tag unstable

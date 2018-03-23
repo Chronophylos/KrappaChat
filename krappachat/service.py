@@ -13,8 +13,10 @@ import threading
 
 import irc.client
 import irc.connection
-from constants import default_colors
 from pythonosc import osc_server, udp_client, dispatcher
+
+from .constants import default_colors
+from .twitch_api import API
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -44,8 +46,9 @@ class ChatEvent:
 		dt = datetime.datetime.fromtimestamp(self.timestamp_ms / 1000)
 		return dt.strftime(format)
 
-	def _get_default_color_for_user(self, name):
-		"""Following: https://discuss.dev.twitch.tv/t/default-user-color-in-chat/385/2 ."""
+	@staticmethod
+	def _get_default_color_for_user(name):
+		"""Following: https://discuss.dev.twitch.tv/t/default-user-color-in-chat/385/2."""
 		n = ord(name[0]) + ord(name[-1])
 		return default_colors[n % len(default_colors)]
 
@@ -56,13 +59,14 @@ class TwitchChatClient(irc.client.SimpleIRCClient):
 	Twitch specific SimpleIRCClient to connect to and communicate with the twitch chat servers.
 	"""
 
-	def __init__(self, channels, nickname, oauth_token):
+	def __init__(self, channels, nickname, oauth_token, api):
 		"""Create a new TwitchChatClient.
 
 		Create a new TwitchChatClient using the provided nickname and
 		oauth_token to connect to the twitch server and join the given
 		channels.
 		"""
+		self.api = api
 		server, port = 'irc.chat.twitch.tv', 443
 		self.channels = channels
 		super().__init__()
@@ -116,11 +120,11 @@ class TwitchChatClient(irc.client.SimpleIRCClient):
 		self.connection.privmsg(target, message)
 
 
-def main():
+def create_service():
 	"""Use this method as the background service."""
-	from secret import nickname, oauth, channels
-	TwitchChatClient(channels, nickname, oauth)
+	from .secret import nickname, oauth, channels
 
+	# Create API
+	api = API(oauth)
 
-if __name__ == '__main__':
-	main()
+	TwitchChatClient(channels, nickname, oauth, api)
