@@ -12,7 +12,6 @@ import sys
 import threading
 
 import irc.client
-import irc.client.Event
 import irc.connection
 from pythonosc import osc_server, udp_client, dispatcher
 
