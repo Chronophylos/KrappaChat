@@ -5,6 +5,7 @@ import pickle
 import sys
 import threading
 
+import irc.client
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.utils import platform
@@ -22,11 +23,11 @@ class ChatView(BoxLayout):
 		self.osc_client = osc_client
 		self.cols = 1
 
-	def send_message(self, target, message):
+	def send_message(self, target: str, message: str):
 		"""Forward message to send to the OSC server."""
 		self.osc_client.send_message('/send_message', [target, message])
 
-	def add_event(self, event):
+	def add_event(self, event: irc.client.Event):
 		"""Add a new message event to the RecycleView."""
 		self.rv.data.append({'event': event})
 
@@ -71,12 +72,12 @@ class KrappaChatApp(App):
 		"""On application stop shut down the OSC server."""
 		self.osc_server.shutdown()
 
-	def handle_pubmsg(self, message, event):
+	def handle_pubmsg(self, message: str, event: irc.client.Event):
 		"""Event method handling public channel messages."""
 		event = pickle.loads(event)
 		self.chat_view.add_event(event)
 
-	def handle_whisper(self, message, event):
+	def handle_whisper(self, message: str, event: irc.client.Event):
 		"""Event method handling private whispers."""
 		event = pickle.loads(event)
 		self.chat_view.add_event(event)

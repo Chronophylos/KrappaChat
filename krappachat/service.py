@@ -12,6 +12,7 @@ import sys
 import threading
 
 import irc.client
+import irc.client.Event
 import irc.connection
 from pythonosc import osc_server, udp_client, dispatcher
 
@@ -24,7 +25,7 @@ logging.basicConfig(level=logging.DEBUG)
 class ChatEvent:
 	"""Data storage class for all chat events."""
 
-	def __init__(self, event):
+	def __init__(self, event: irc.client.Event):
 		"""Create a new ChatEvent from a given event of type irc.client.Event."""
 		self.source = event.source
 		self.target = event.target
@@ -59,7 +60,8 @@ class TwitchChatClient(irc.client.SimpleIRCClient):
 	Twitch specific SimpleIRCClient to connect to and communicate with the twitch chat servers.
 	"""
 
-	def __init__(self, channels, nickname, oauth_token, api):
+	def __init__(self, channels: list, nickname: str, oauth_token: str,
+				 api: API):
 		"""Create a new TwitchChatClient.
 
 		Create a new TwitchChatClient using the provided nickname and
@@ -87,7 +89,7 @@ class TwitchChatClient(irc.client.SimpleIRCClient):
 					 connect_factory=connect_factory)
 		self.start()
 
-	def on_welcome(self, connection, event):
+	def on_welcome(self, connection: irc.connection, event: irc.client.Event):
 		"""Server welcome handling.
 
 		Join the given channels and use IRC v3 capability registration as documented here:
@@ -97,25 +99,29 @@ class TwitchChatClient(irc.client.SimpleIRCClient):
 		connection.cap('REQ', ':twitch.tv/tags')
 		connection.cap('REQ', ':twitch.tv/commands')
 		for channel in self.channels:
+			channel = channel.lower()
+			if not channel.startswith('#'):
+				channel = '#' + channel
 			connection.join(channel)
 
-	def on_join(self, connection, event):
+	def on_join(self, connection: irc.connection, event: irc.client.Event):
 		"""Channel join handling."""
 		logging.info('Joined channel.')
 
-	def on_disconnect(self, connection, event):
+	def on_disconnect(self, connection: irc.connection,
+					  event: irc.client.Event):
 		"""Server disconnect handling."""
 		sys.exit(0)
 
-	def on_pubmsg(self, connection, event):
+	def on_pubmsg(self, connection: irc.connection, event: irc.client.Event):
 		"""Public message handling forwarding the event via OSC."""
 		self.osc_client.send_message('/pubmsg', pickle.dumps(ChatEvent(event)))
 
-	def on_whisper(self, connection, event):
+	def on_whisper(self, connection: irc.connection, event: irc.client.Event):
 		"""Whisper message handling forwarding the event via OSC."""
 		self.osc_client.send_message('/whisper', pickle.dumps(ChatEvent(event)))
 
-	def send_message(self, command, target, message):
+	def send_message(self, command, target: str, message: str):
 		"""Send message to IRC."""
 		self.connection.privmsg(target, message)
 
