@@ -84,6 +84,7 @@ class KrappaChatApp(App):
 
 
 def main():
+	"""Main."""
 	KrappaChatApp().run()
 
 
