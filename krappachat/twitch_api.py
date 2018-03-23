@@ -21,5 +21,6 @@ class API:
 
     def __init__(self, oauth: str):
         """Initialize the API class."""
-        self.client = TwitchClient(client_id=b64decode(self.client_id).encode('utf-8'),
-                                   oauth_token=oauth)
+		self.client = TwitchClient(
+			client_id=b64decode(self.client_id).decode('utf-8'),
+			oauth_token=oauth)
