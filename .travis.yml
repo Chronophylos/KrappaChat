@@ -46,10 +46,7 @@ script:
   - pipenv run pydocstyle krappachat
   - pipenv run pyinstaller --windowed --strip --onefile --name krappachat krappachat/__main__.py
 
-before_deploy:
-  - git tag unstable
-
-deploy:
+deploy-disabled:
   provider: releases
   overwrite: true
   api_key:
