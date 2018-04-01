@@ -1,4 +1,4 @@
-# KrappaChat [![Build Status](https://travis-ci.org/Chronophylos/KrappaChat.svg?branch=master)](https://travis-ci.org/Chronophylos/KrappaChat) [![Build status](https://ci.appveyor.com/api/projects/status/1rch72q1tver6gh3?svg=true)](https://ci.appveyor.com/project/Chronophylos/krappachat)
+# KrappaChat [![Build Status](https://travis-ci.org/Chronophylos/KrappaChat.svg?branch=master)](https://travis-ci.org/Chronophylos/KrappaChat) [![Build status](https://ci.appveyor.com/api/projects/status/1rch72q1tver6gh3?svg=true)](https://ci.appveyor.com/project/Chronophylos/krappachat) [![Coverage Status](https://coveralls.io/repos/github/Chronophylos/KrappaChat/badge.svg?branch=master)](https://coveralls.io/github/Chronophylos/KrappaChat?branch=master) 
 
 ## Description
 stuff with pics
