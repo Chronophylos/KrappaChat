@@ -1,12 +1,9 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [packages]
-
 cython = "==0.27.3"
 kivy = {git = "https://github.com/kivy/kivy.git", editable = true, egg = "kivy"}
 python-osc = "*"
@@ -14,15 +11,12 @@ irc = "*"
 python-twitch-client = {git = "https://github.com/tsifrer/python-twitch-client.git", editable = true}
 pillow = "*"
 
-
 [dev-packages]
-
 buildozer = "*"
 pyinstaller = "*"
 pydocstyle = "*"
 pycodestyle = "*"
-
+coveralls = "*"
 
 [requires]
-
 python_version = "3.6"

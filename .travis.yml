@@ -58,3 +58,6 @@ deploy-disabled:
     branch: master
     python: '3.6'
   name: unstable
+
+after_success:
+  - pipenv run coveralls
