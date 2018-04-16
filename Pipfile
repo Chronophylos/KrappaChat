@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 cython = "==0.27.3"
 kivy = {git = "https://github.com/kivy/kivy.git", editable = true, egg = "kivy"}
-python-osc = "*"
 irc = "*"
 python-twitch-client = {git = "https://github.com/tsifrer/python-twitch-client.git", editable = true}
 pillow = "*"
