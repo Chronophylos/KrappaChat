@@ -10,6 +10,7 @@ python-osc = "*"
 irc = "*"
 python-twitch-client = {git = "https://github.com/tsifrer/python-twitch-client.git", editable = true}
 pillow = "*"
+blinker = "*"
 
 [dev-packages]
 buildozer = "*"

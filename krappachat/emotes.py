@@ -1,5 +1,7 @@
 """Module for emote handling."""
 
+import hashlib
+import json
 import os
 from enum import Enum
 from io import BytesIO
@@ -28,7 +30,8 @@ class EmoteCache:
 	"""Class for caching emotes."""
 
 	location = 'cache'
-	index = dict()
+	index_file = location + '/index.json'
+	index = None
 
 	@staticmethod
 	def load(name: str):
@@ -40,14 +43,11 @@ class EmoteCache:
 		:param name: a string to search for in the cache
 		:return: a byte-like object
 		"""
-		if name not in EmoteCache.index:
-			path = os.path.join(EmoteCache.location, name)
-			if os.path.exists(path):
-				EmoteCache.index[name] = path
-			else:
-				raise FileNotFoundError
-		with open(EmoteCache.index[name], 'rb') as cached_file:
-			data = cached_file.read()
+		data = None
+		EmoteCache._load_index()
+		if name in EmoteCache.index:
+			with open(EmoteCache.index[name], 'rb') as cached_file:
+				data = cached_file.read()
 		return data
 
 	@staticmethod
@@ -57,61 +57,138 @@ class EmoteCache:
 		:param name: a name for the cached file
 		:param data: a byte-like object to cache
 		"""
-		path = os.path.join(EmoteCache.location, name)
+		EmoteCache._load_index()
+		path = ""
+		if name not in EmoteCache.index.items():
+			path = os.path.join(EmoteCache.location,
+								hashlib.sha1(name.encode()).hexdigest())
+			EmoteCache.index[name] = path
+		else:
+			path = EmoteCache.index[name] = path
 		with open(path, 'wb') as cached_file:
 			cached_file.write(data.getvalue())
-		EmoteCache.index[name] = path
+		EmoteCache._save_index()
+
+	@staticmethod
+	def _load_index():
+		"""Load the index file containing the paths for the cache."""
+		if not EmoteCache.index:
+			if not os.path.exists(EmoteCache.index_file):
+				EmoteCache.index = dict()
+			else:
+				EmoteCache.index = json.load(open(EmoteCache.index_file))
+
+	@staticmethod
+	def _save_index():
+		"""Save the index to a file."""
+		json.dump(EmoteCache.index, open(EmoteCache.index_file, 'w'))
 
 
-class Emote:
+class BaseEmote:
 	"""Class to download and store an emote."""
 
 	images = dict()
 
-	def __init__(self, name: str, url: str, emote_type: EmoteTypes):
+	def __init__(self, name: str, emote_id: int or str, emote_type: EmoteTypes):
 		"""Create new emote by name and url."""
 		self.name = name
-		self.url = url
-		if not url.endswith('/'):
-			self.url += '/'
+		self.id = emote_id
 		self.emote_type = emote_type
-		# TODO: make async
-		for res in EmoteResolutions:
-			self.images[res] = EmoteCache.load(self.name + res)
 
-	def download(self, res: EmoteResolutions):
-		"""Download emote image data."""
-		suffix = Emote.get_suffix_for_type(res, self.emote_type)
-		r = requests.get(self.url + suffix)
+	def download(self, res: EmoteResolutions) -> bool:
+		"""Download emote image data.
+
+		:return: True if the image is loaded from cache and False otherwise.
+		"""
+		name = ';'.join([self.name, self.id, res.value])
+		img = EmoteCache.load(name)
+		if img is not None:
+			self.images[res] = img
+			return True
+		url = self.get_url(res)
+		r = requests.get(url)
 		if not r.status_code == 200:
 			raise Exception
 		b = BytesIO(r.content)
-		EmoteCache.cache(self.name + res.value, b)
+		EmoteCache.cache(name, b)
 		self.images[res] = Image.open(b)
+		return False
 
-	@staticmethod
-	def get_suffix_for_type(res: EmoteResolutions, emote_type: EmoteTypes):
+	def get_url(self, res: EmoteResolutions) -> str:
 		"""Get URL suffix for given emote resolution and type."""
-		if emote_type == EmoteTypes.Twitch:
-			return str(res.value) + '.0'
-		if emote_type == EmoteTypes.FrankerFaceZ:
-			value = 4 if res.value == 3 else res.value
-			return str(value)
-		if emote_type == EmoteTypes.BetterTwitchTV:
-			return str(res.value) + 'x'
+		pass
 
 
-class EmoteList:
-	"""Stores all emotes."""
+class TwitchEmote(BaseEmote):
+	"""A twitch emote."""
+
+	def __init__(self, name: str, emote_id: int):
+		"""Call the super."""
+		super().__init__(name, emote_id, EmoteTypes.Twitch)
+
+	def get_url(self, res: EmoteResolutions) -> str:
+		""":returns: the url for this twitch emote."""
+		return f'https://static-cdn.jtvnw.net/emoticons/v1/{self.id}/{res.value}.0'
+
+
+class FFZEmote(BaseEmote):
+	"""A FFZ emote."""
+
+	def __init__(self, name: str, emote_id: int or str):
+		"""Call the super."""
+		super().__init__(name, emote_id, EmoteTypes.FrankerFaceZ)
+
+	def get_url(self, res: EmoteResolutions) -> str:
+		""":returns: the url for this twitch emote."""
+		value = 4 if res.value == 3 else res.value
+		return f'https://cdn.frankerfacez.com/emoticon/{self.id}/{value}'
+
+
+class BTTVEmote(BaseEmote):
+	"""A BTTV emote."""
+
+	def __init__(self, name: str, emote_id: int or str):
+		"""Call the super."""
+		super().__init__(name, emote_id, EmoteTypes.BetterTwitchTV)
+
+	def get_url(self, res: EmoteResolutions) -> str:
+		""":returns: the url for this twitch emote."""
+		return f'https://cdn.betterttv.net/emote/{self.id}/{res.value}x'
+
+
+class EmoteSet:
+	"""Stores a emote set."""
+
+	emotes = list()
+
+	def __init__(self, set_id: int, emote_class=BaseEmote):
+		"""Constructor."""
+		self.id = set_id
+		self.emote_class = emote_class
+
+	def get_set(self):
+		""":return: the set."""
+		pass
+
+	def download(self, res: EmoteResolutions):
+		"""Download the set."""
+		for emote in self.emotes:
+			assert isinstance(emote, self.emote_class)
+			emote.download(res)
+
+
+class GlobalEmotes(EmoteSet):
+	"""Stores all global Twitch Emotes."""
 
 	def __init__(self):
-		"""Create new list of emotes."""
-		pass
+		"""Call the super."""
+		super().__init__(0)
 
-	def add_emote(self):
-		"""Add given emote."""
-		pass
 
-	def add_emotes(self):
-		"""Add given emotes."""
-		pass
+class FFZChannelEmotes(EmoteSet):
+	"""Stores all FFZ Emotes for a channel."""
+
+	def __init__(self, name: str, set_id: int):
+		"""Call the super."""
+		self.name = name
+		super().__init__(set_id)

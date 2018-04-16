@@ -6,26 +6,29 @@ import sys
 import threading
 
 import irc.client
+from blinker import Namespace
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.utils import platform
-from pythonosc import osc_server, udp_client, dispatcher
 
 logging.basicConfig(level=logging.INFO)
+
+blinker_namespace = Namespace()
+Signal = blinker_namespace.signal
 
 
 class ChatView(BoxLayout):
 	"""Kivy chat view widget."""
 
-	def __init__(self, osc_client, **kwargs):
+	def __init__(self, **kwargs):
 		"""Initialize a new ChatView with the given OSC client to forward messages."""
 		super().__init__(**kwargs)
-		self.osc_client = osc_client
 		self.cols = 1
 
 	def send_message(self, target: str, message: str):
 		"""Forward message to send to the OSC server."""
-		self.osc_client.send_message('/send_message', [target, message])
+		send_message_signal = Signal('send_message')
+		send_message_signal.send(target=target, message=message)
 
 	def add_event(self, event: irc.client.Event):
 		"""Add a new message event to the RecycleView."""
@@ -40,37 +43,28 @@ class KrappaChatApp(App):
 	"""Main kivy application responsible for GUI and background service handling."""
 
 	def build(self):
-		"""Build main application, initialize background service and OSC server."""
+		"""Build main application, initialize background service and events."""
 		logging.info(f'Detected platform "{platform}"')
+
 		if platform == 'android':
 			from android import AndroidService
 			self.service = AndroidService(title='IRCService')
 		elif platform in ['linux', 'win']:
 			from .service import create_service
-			self.service = threading.Thread(target=create_service, args=())
+			self.service = threading.Thread(target=create_service,
+											args=(blinker_namespace,))
 			self.service.daemon = True
 		else:
 			logging.critical(f'Currently not supported platform!')
 			sys.exit(1)
 		self.service.start()
 
-		# OSC server
-		dp = dispatcher.Dispatcher()
-		dp.map('/pubmsg', self.handle_pubmsg)
-		dp.map('/whisper', self.handle_whisper)
-		self.osc_server = osc_server.ThreadingOSCUDPServer(('127.0.0.1', 3000), dp)
-		server_thread = threading.Thread(target=self.osc_server.serve_forever)
-		server_thread.start()
+		self.chat_view = ChatView()
 
-		# OSC client
-		self.osc_client = udp_client.SimpleUDPClient('127.0.0.1', 3001)
+		Signal('pubmsg').connect(self.handle_pubmsg)
+		Signal('whisper').connect(self.handle_whisper)
 
-		self.chat_view = ChatView(self.osc_client)
 		return self.chat_view
-
-	def on_stop(self):
-		"""On application stop shut down the OSC server."""
-		self.osc_server.shutdown()
 
 	def handle_pubmsg(self, message: str, event: irc.client.Event):
 		"""Event method handling public channel messages."""

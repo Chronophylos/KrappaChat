@@ -9,16 +9,19 @@ import logging
 import pickle
 import ssl
 import sys
-import threading
 
 import irc.client
 import irc.connection
-from pythonosc import osc_server, udp_client, dispatcher
+from blinker import Namespace
 
 from .constants import default_colors
 from .twitch_api import API
 
 logging.basicConfig(level=logging.DEBUG)
+
+
+# blinker_namespace = Namespace()
+# Signal = Namespace().signal
 
 
 class ChatEvent:
@@ -72,15 +75,7 @@ class TwitchChatClient(irc.client.SimpleIRCClient):
 		self.channels = channels
 		super().__init__()
 
-		# OSC client
-		self.osc_client = udp_client.SimpleUDPClient('127.0.0.1', 3000)
-
-		# OSC server
-		dp = dispatcher.Dispatcher()
-		dp.map('/send_message', self.send_message)
-		self.osc_server = osc_server.ThreadingOSCUDPServer(('127.0.0.1', 3001), dp)
-		server_thread = threading.Thread(target=self.osc_server.serve_forever)
-		server_thread.start()
+		Signal('send_message').connect(self.send_message)
 
 		# IRC connection
 		connect_factory = irc.connection.Factory(wrapper=ssl.wrap_socket)
@@ -113,21 +108,29 @@ class TwitchChatClient(irc.client.SimpleIRCClient):
 		sys.exit(0)
 
 	def on_pubmsg(self, connection: irc.connection, event: irc.client.Event):
-		"""Public message handling forwarding the event via OSC."""
-		self.osc_client.send_message('/pubmsg', pickle.dumps(ChatEvent(event)))
+		"""Public message handling forwarding the event via Signal."""
+		Signal('pubmsg').send(event=pickle.dumps(ChatEvent(event)))
 
 	def on_whisper(self, connection: irc.connection, event: irc.client.Event):
-		"""Whisper message handling forwarding the event via OSC."""
-		self.osc_client.send_message('/whisper', pickle.dumps(ChatEvent(event)))
+		"""Whisper message handling forwarding the event via Signal."""
+		Signal('whisper').send(event=pickle.dumps(ChatEvent(event)))
 
 	def send_message(self, command, target: str, message: str):
 		"""Send message to IRC."""
 		self.connection.privmsg(target, message)
 
 
-def create_service():
+def create_service(namespace):
 	"""Use this method as the background service."""
 	from .secret import nickname, oauth, channels
+
+	assert isinstance(namespace, Namespace)
+
+	global blinker_namespace
+	global Signal
+
+	blinker_namespace = namespace
+	Signal = namespace.signal
 
 	# Create API
 	api = API(oauth)
