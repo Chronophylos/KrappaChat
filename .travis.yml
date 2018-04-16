@@ -43,7 +43,7 @@ install:
   # - pipenv sync --dev
 
 script:
-  - pipenv check
+  # - pipenv check
   - pipenv run pycodestyle krappachat
   - pipenv run pydocstyle krappachat
   - pipenv run pyinstaller --windowed --strip --onefile --name krappachat krappachat/__main__.py
