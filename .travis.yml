@@ -39,8 +39,8 @@ before_install:
   - pip install --upgrade pipenv setuptools buildozer
 
 install:
-  # - pipenv install --dev --skip-lock
-  - pipenv sync --dev
+  - pipenv install --dev --skip-lock
+  # - pipenv sync --dev
 
 script:
   - pipenv check
