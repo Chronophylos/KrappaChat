@@ -7,16 +7,22 @@ environment:
     - PYTHON: "C:\\Python36-x64"
       ARCH: "x64"
   GLEW: glew-2.1.0
+  global:
+    # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
+    # /E:ON and /V:ON options are not enabled in the batch script intepreter
+    # See: http://stackoverflow.com/a/13751649/163740
+    CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\continuous-integration\\appveyor\\run_with_env.cmd"
+
 
 build:
   verbosity: detailed
 
 install:
    # set environment
-  - set PATH=%PYTHON%/Scripts;%PATH%
+  - set PATH=%PYTHON%;%PYTHON%/Scripts;%PATH%
   - python.exe -m pip install --upgrade pip
    # python stuff
-  - pip.exe install docutils pygments pypiwin32 kivy.deps.sdl2 kivy.deps.glew cython==0.21 pipenv buildozer
+  - pip.exe install docutils pygments pypiwin32 kivy.deps.sdl2 kivy.deps.angle cython==0.21 pipenv buildozer
    # pipenv stuff
   - pipenv.exe install --sequential --dev --skip-lock
   - pipenv.exe graph
