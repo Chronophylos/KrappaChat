@@ -8,10 +8,13 @@ environment:
       ARCH: "x64"
   GLEW: glew-2.1.0
 
+build:
+  verbosity: detailed
+
 install:
   # set environment
-  - ps: $env:PY = $env:PYTHON + "/Scripts"
-  - ps: ."$env:PY/python.exe" -m pip install --upgrade pip
+  - set PY=%PYTHON%"/Scripts"
+  - %PY%/python.exe" -m pip install --upgrade pip
 #  - ps: | # install glew
 #      $GLEW_ZIP = $env:GLEW + "-win32.zip"
 #      appveyor DownloadFile https://github.com/nigels-com/glew/releases/download/glew-2.1.0/$GLEW_ZIP
@@ -27,12 +30,12 @@ install:
 #      move $env:GLEW/include/GL/wglew.h $env:PYTHON/Include/GL
 #      dir
   # python stuff
-  - ps: ."$env:PY/pip.exe" install docutils pygments pypiwin32 kivy.deps.sdl2 kivy.deps.glew cython==0.21 pipenv buildozer
+  - %PY%/pip.exe" install docutils pygments pypiwin32 kivy.deps.sdl2 kivy.deps.glew cython==0.21 pipenv buildozer
    # pipenv stuff
-  - ps: ."$env:PY/pipenv.exe" install --sequential --dev --skip-lock
-  - ps: ."$env:PY/pipenv.exe" graph
+  - %PY%/pipenv.exe" install --sequential --dev --skip-lock
+  - %PY%/pipenv.exe" graph
    # build and pack
-  - ps: ."$env:PY/pipenv.exe" run pyinstaller -D --windowed --name KrappaChat krappachat/main.py
+  - %PY%/pipenv.exe" run pyinstaller -D --windowed --name KrappaChat krappachat/main.py
 
 
 build: off
