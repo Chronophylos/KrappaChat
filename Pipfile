@@ -17,6 +17,7 @@ pyinstaller = "*"
 pydocstyle = "*"
 pycodestyle = "*"
 coveralls = "*"
+nose = "*"
 
 [requires]
 python_version = "3.6"
