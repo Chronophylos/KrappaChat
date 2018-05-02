@@ -7,6 +7,8 @@ Current [mockup](https://app.moqups.com/novalis/5edP1cP1Yz/view)
 
 <img src="mockup.png" width="200">
 
+[Trello board](https://trello.com/b/UUaMDEPY)
+
 ***TODO FIX***
 ## Requirements
 * [Python 3.6+](https://python.org)
