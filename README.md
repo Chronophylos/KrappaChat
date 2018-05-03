@@ -5,7 +5,7 @@
 
 Current [mockup](https://app.moqups.com/novalis/5edP1cP1Yz/view)
 
-<img src="mockup.png" width="500">
+<img src="mockup.png" width="100%">
 
 [Trello board](https://trello.com/b/UUaMDEPY)
 
