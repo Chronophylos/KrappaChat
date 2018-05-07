@@ -1,5 +1,6 @@
 """Main module of KrappaChat containing the KrappaChatApp kivy application."""
 
+import cProfile
 import logging
 import pickle
 import sys
@@ -23,7 +24,6 @@ class ChatView(BoxLayout):
 	def __init__(self, **kwargs):
 		"""Initialize a new ChatView with the given OSC client to forward messages."""
 		super().__init__(**kwargs)
-		self.cols = 1
 
 	def send_message(self, target: str, message: str):
 		"""Forward message to send to the OSC server."""
@@ -43,7 +43,16 @@ class KrappaChatApp(App):
 	"""Main kivy application responsible for GUI and background service handling."""
 
 	def build(self):
+		self.title = 'KrappaChat'
+		self.chat_view = ChatView()
+		return self.chat_view
+
+	def on_start(self):
 		"""Build main application, initialize background service and events."""
+
+		self.profile = cProfile.Profile()
+		self.profile.enable()
+
 		logging.info(f'Detected platform "{platform}"')
 
 		if platform == 'android':
@@ -59,12 +68,13 @@ class KrappaChatApp(App):
 			sys.exit(1)
 		self.service.start()
 
-		self.chat_view = ChatView()
-
 		Signal('pubmsg').connect(self.handle_pubmsg)
 		Signal('whisper').connect(self.handle_whisper)
+		Signal('joined').connect(self.handle_joined)
 
-		return self.chat_view
+	def on_stop(self):
+		self.profile.disable()
+		self.profile.dump_stats('krappachat.profile')
 
 	def handle_pubmsg(self, message: str, event: irc.client.Event):
 		"""Event method handling public channel messages."""
@@ -75,6 +85,11 @@ class KrappaChatApp(App):
 		"""Event method handling private whispers."""
 		event = pickle.loads(event)
 		self.chat_view.add_event(event)
+
+	def handle_joined(self, message: str, event: irc.client.Event):
+		"""Event method handling join channel events."""
+		event = pickle.loads(event)
+		print(repr(event))
 
 
 def main():

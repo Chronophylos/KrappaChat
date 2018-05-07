@@ -101,6 +101,8 @@ class TwitchChatClient(irc.client.SimpleIRCClient):
 	def on_join(self, connection: irc.connection, event: irc.client.Event):
 		"""Channel join handling."""
 		logging.info('Joined channel.')
+		logging.debug(event)
+		Signal('joined').send(event=pickle.dumps(event))
 
 	def on_disconnect(self, connection: irc.connection,
 					  event: irc.client.Event):

@@ -1,7 +1,7 @@
 {
   "_meta": {
     "hash": {
-      "sha256": "cb6d5ffafe7bd8615305b26aecd1ccac30622224ab2e9742be3a3951046cc52b"
+      "sha256": "227352223c502a1e9d28237fed140c55c67b03878e022d497e8622b4f5ffecf7"
     },
     "pipfile-spec": 6,
     "requires": {
@@ -25,10 +25,10 @@
     },
     "certifi": {
       "hashes": [
-        "sha256:14131608ad2fd56836d33a71ee60fa1c82bc9d2c8d98b7bdbc631fe1b3cd1296",
-        "sha256:edbc3f203427eef571f79a7692bb160a2b0f7ccaa31953e99bd17e307cf63f7d"
+        "sha256:13e698f54293db9f89122b0581843a782ad0934a4fe0172d2a980ba77fc61bb7",
+        "sha256:9fa520c1bacfb634fa7af20a76bcbd3d5fb390481724c597da32c719a7dca4b0"
       ],
-      "version": "==2018.1.18"
+      "version": "==2018.4.16"
     },
     "chardet": {
       "hashes": [
@@ -133,10 +133,10 @@
     },
     "jaraco.logging": {
       "hashes": [
-        "sha256:2223de2f518db1b3945004b443f72670b4eb844479c6f493f1a7bee791cb386e",
-        "sha256:e4eac879927ecb2065c0631d2c8bb36c16138c5085c57db055bdfee2fdb709a8"
+        "sha256:23b10eb0d65afe042fad16eabdf5956bdc863e110c5cf3fa1b4bc59f3a7f37a5",
+        "sha256:625977c56644d040d2023d8a3639d6b9ad0f490bc26e17be7bb5754a255178fb"
       ],
-      "version": "==1.5.1"
+      "version": "==1.5.2"
     },
     "jaraco.stream": {
       "hashes": [
@@ -228,13 +228,6 @@
       ],
       "version": "==2.2.0"
     },
-    "python-osc": {
-      "hashes": [
-        "sha256:ffc70e3113aa98ec1e6c988ee901df6f047f9bdced3403aed3705038b237c32e"
-      ],
-      "index": "pypi",
-      "version": "==1.6.4"
-    },
     "python-twitch-client": {
       "editable": true,
       "git": "https://github.com/tsifrer/python-twitch-client.git",
@@ -293,10 +286,10 @@
     },
     "certifi": {
       "hashes": [
-        "sha256:14131608ad2fd56836d33a71ee60fa1c82bc9d2c8d98b7bdbc631fe1b3cd1296",
-        "sha256:edbc3f203427eef571f79a7692bb160a2b0f7ccaa31953e99bd17e307cf63f7d"
+        "sha256:13e698f54293db9f89122b0581843a782ad0934a4fe0172d2a980ba77fc61bb7",
+        "sha256:9fa520c1bacfb634fa7af20a76bcbd3d5fb390481724c597da32c719a7dca4b0"
       ],
-      "version": "==2018.1.18"
+      "version": "==2018.4.16"
     },
     "chardet": {
       "hashes": [
@@ -379,6 +372,15 @@
         "sha256:9aeec52d7da59912b15445d08b08d95cee48414f01dd035be06f04a825973c08"
       ],
       "version": "==1.9"
+    },
+    "nose": {
+      "hashes": [
+        "sha256:9ff7c6cc443f8c51994b34a667bbcf45afd6d945be7477b52e97516fd17c53ac",
+        "sha256:dadcddc0aefbf99eea214e0f1232b94f2fa9bd98fa8353711dacb112bfcbbb2a",
+        "sha256:f1bffef9cbc82628f6e7d7b40d7e255aefaa1adb6a1b1d26c69a8b79e6208a98"
+      ],
+      "index": "pypi",
+      "version": "==1.3.7"
     },
     "pefile": {
       "hashes": [

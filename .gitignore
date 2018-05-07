@@ -162,3 +162,5 @@ secret.py
 .buildozer
 
 .idea
+*.profile
+.local/
