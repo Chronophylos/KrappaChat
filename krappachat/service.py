@@ -20,10 +20,6 @@ from .twitch_api import API
 logging.basicConfig(level=logging.DEBUG)
 
 
-# blinker_namespace = Namespace()
-# Signal = Namespace().signal
-
-
 class ChatEvent:
 	"""Data storage class for all chat events."""
 
@@ -32,22 +28,34 @@ class ChatEvent:
 		self.source = event.source
 		self.target = event.target
 		self.type = event.type
-		self.message = ' '.join(event.arguments)
-		tags = {i['key']: i['value'] for i in event.tags}
-		self.timestamp_ms = int(tags['tmi-sent-ts'])
-		self.time_string = self._get_sent_time_string()
-		self.badges = tags['badges'].split(',') if tags['badges'] else []
-		self.user_name = tags['display-name']
-		self.user_color = tags['color'] if tags['color'] else self._get_default_color_for_user(self.user_name)
-		self.user_is_mod = tags['mod'] == '1'
-		self.user_is_sub = tags['subscriber'] == '1'
-		self.user_is_turbo = tags['turbo'] == '1'
-		# Missing: self.user_type, self.user_id, self.room_id, self.emotes, self.id
+		if self.type == 'join':
+			self.message = f'Joined {self.target[1:]}'
+			self.user_color = '#a9a9a9'
+			self.user_name = 'System'
+			self.time_string = self._get_current_time_string()
+		else:
+			self.message = ' '.join(event.arguments)
+			tags = {i['key']: i['value'] for i in event.tags}
+			self.timestamp_ms = int(tags['tmi-sent-ts'])
+			self.time_string = self._get_sent_time_string()
+			self.badges = tags['badges'].split(',') if tags['badges'] else []
+			self.user_name = tags['display-name']
+			self.user_color = tags['color'] if tags['color'] else self._get_default_color_for_user(self.user_name)
+			self.user_is_mod = tags['mod'] == '1'
+			self.user_is_sub = tags['subscriber'] == '1'
+			self.user_is_turbo = tags['turbo'] == '1'
+			# Missing: self.user_type, self.user_id, self.room_id, self.emotes, self.id
+			print(repr(tags))
 
-	def _get_sent_time_string(self, format='%H:%M:%S'):
+	def _get_sent_time_string(self, fmt='%H:%M:%S'):
 		"""Return the sent time in readable form in the given format."""
 		dt = datetime.datetime.fromtimestamp(self.timestamp_ms / 1000)
-		return dt.strftime(format)
+		return dt.strftime(fmt)
+
+	def _get_current_time_string(self, fmt='%H:%M:%S'):
+		"""Return the current time in readable form in the given format."""
+		dt = datetime.datetime.now()
+		return dt.strftime(fmt)
 
 	@staticmethod
 	def _get_default_color_for_user(name):
@@ -78,6 +86,7 @@ class TwitchChatClient(irc.client.SimpleIRCClient):
 		Signal('send_message').connect(self.send_message)
 
 		# IRC connection
+
 		connect_factory = irc.connection.Factory(wrapper=ssl.wrap_socket)
 		self.connect(server, port, nickname, password=oauth_token,
 					 connect_factory=connect_factory)
@@ -100,9 +109,7 @@ class TwitchChatClient(irc.client.SimpleIRCClient):
 
 	def on_join(self, connection: irc.connection, event: irc.client.Event):
 		"""Channel join handling."""
-		logging.info('Joined channel.')
-		logging.debug(event)
-		Signal('joined').send(event=pickle.dumps(event))
+		Signal('chat-message').send(event=pickle.dumps(ChatEvent(event)))
 
 	def on_disconnect(self, connection: irc.connection,
 					  event: irc.client.Event):
@@ -111,14 +118,17 @@ class TwitchChatClient(irc.client.SimpleIRCClient):
 
 	def on_pubmsg(self, connection: irc.connection, event: irc.client.Event):
 		"""Public message handling forwarding the event via Signal."""
-		Signal('pubmsg').send(event=pickle.dumps(ChatEvent(event)))
+		Signal('chat-message').send(event=pickle.dumps(ChatEvent(event)))
 
-	def on_whisper(self, connection: irc.connection, event: irc.client.Event):
+	def on_privmsg(self, connection: irc.connection, event: irc.client.Event):
 		"""Whisper message handling forwarding the event via Signal."""
-		Signal('whisper').send(event=pickle.dumps(ChatEvent(event)))
+		Signal('whisper-message').send(event=pickle.dumps(ChatEvent(event)))
+		Signal('chat-message').send(event=pickle.dumps(ChatEvent(event)))
 
 	def send_message(self, command, target: str, message: str):
 		"""Send message to IRC."""
+		print('target: ' + target)
+		print('message: ' + message)
 		self.connection.privmsg(target, message)
 
 
